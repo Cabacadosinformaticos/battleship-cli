@@ -1,0 +1,15 @@
+bin/
+obj/
+.vs/
+.vscode/
+.idea/
+*.suo
+*.user
+.DS_Store
+
+# Local tooling
+CLAUDE.md
+AGENTS.md
+.claude/
+.codex/
+.mcp.json
