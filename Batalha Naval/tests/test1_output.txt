@@ -1,0 +1,8 @@
+Jogador registado com sucesso.
+Jogador registado com sucesso.
+Jogador existente.
+Alice 0 0
+Bob 0 0
+Jogador não existente.
+Jogador removido com sucesso.
+Alice 0 0

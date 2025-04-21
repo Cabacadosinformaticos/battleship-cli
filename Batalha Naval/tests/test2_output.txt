@@ -1,0 +1,6 @@
+Jogador registado com sucesso.
+Jogador registado com sucesso.
+Jogo iniciado entre Joana e Tiago.
+Existe um jogo em curso.
+Jogador registado com sucesso.
+Jogador não registado.

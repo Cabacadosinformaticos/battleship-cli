@@ -1,0 +1,51 @@
+RJ Alice
+RJ Bob
+RJ Charlie
+RJ Alice
+LJ
+EJ Charlie
+IJ Alice Bob
+EJ Alice
+CN Alice P 1 A E
+CN Alice C 3 G E
+CN Alice F 5 C E
+CN Alice L 1 J -
+RN Alice 1 J
+CN Alice F 6 I S
+CN Alice S 1 G E
+CN Alice S 3 A E
+CN Alice S 3 D E
+CN Alice L 1 J -
+CN Alice L 5 A 
+CN Alice L 5 G -
+CN Alice L 7 A 
+CN Alice L 9 C -
+CN Bob P 1 J O
+CN Bob C 3 D O
+CN Bob F 5 H O
+CN Bob F 6 B S
+CN Bob S 1 D O
+CN Bob S 3 J O
+CN Bob S 3 G O
+CN Bob L 1 A -
+CN Bob L 5 J -
+CN Bob L 5 D -
+CN Bob L 7 J -
+IC
+CN Alice L 10 E -
+T Alice 1 J
+V
+T Bob 1 A
+T Alice 1 I
+T Bob 1 B
+V
+T Alice 1 I
+V
+T Alice 1 H
+T Alice 2 H
+V
+T Bob 1 C
+T Alice 1 G
+D Bob
+V
+LJ
