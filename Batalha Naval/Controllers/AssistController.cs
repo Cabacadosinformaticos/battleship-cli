@@ -108,5 +108,62 @@ namespace BatalhaNaval.Controllers
                 }
             }
         }
+
+        /// <summary>
+        /// Handles the "IJ" command to start a game between two registered players.
+        /// </summary>
+        /// <param name="players">The list of registered players.</param>
+        /// <param name="parts">The command arguments.</param>
+        /// <param name="activePlayer1">Output: the first player in the match.</param>
+        /// <param name="activePlayer2">Output: the second player in the match.</param>
+        /// <param name="gameInProgress">Reference: flag indicating if a game is running.</param>
+        public static void InitGame(
+            List<Player> players,
+            string[] parts,
+            out Player? activePlayer1,
+            out Player? activePlayer2,
+            ref bool gameInProgress
+        )
+        {
+            // Reset output values
+            activePlayer1 = null;
+            activePlayer2 = null;
+
+            // Validate the command has two player names
+            if (parts.Length != 3)
+            {
+                CLI.ShowError("Instrução inválida.");
+                return;
+            }
+
+            string name1 = parts[1];
+            string name2 = parts[2];
+
+            // Try to find both players
+            var player1 = players.FirstOrDefault(p => p.Name == name1);
+            var player2 = players.FirstOrDefault(p => p.Name == name2);
+
+            if (player1 == null || player2 == null)
+            {
+                // One or both players not found
+                CLI.ShowError("Jogador não registado.");
+            }
+            else if (gameInProgress)
+            {
+                // Cannot start a new game if one is already running
+                CLI.ShowError("Existe um jogo em curso.");
+            }
+            else
+            {
+                // Set active players and start the game
+                activePlayer1 = player1;
+                activePlayer2 = player2;
+                gameInProgress = true;
+
+                // Display a confirmation message in alphabetical order
+                var namesOrdered = new[] { name1, name2 }.OrderBy(n => n).ToArray();
+                CLI.ShowMessage($"Jogo iniciado entre {namesOrdered[0]} e {namesOrdered[1]}.");
+            }
+        }
     }
 }
