@@ -165,5 +165,121 @@ namespace BatalhaNaval.Controllers
                 CLI.ShowMessage($"Jogo iniciado entre {namesOrdered[0]} e {namesOrdered[1]}.");
             }
         }
+
+        /// <summary>
+        /// Handles the "CN" command to place a ship on the player's board.
+        /// </summary>
+        /// <param name="parts">The command arguments.</param>
+        /// <param name="gameInProgress">Indicates whether a game is currently in progress.</param>
+        /// <param name="combatStarted">Indicates whether combat has started.</param>
+        /// <param name="activePlayer1">Reference to the first player.</param>
+        /// <param name="activePlayer2">Reference to the second player.</param>
+        public static void PlaceShip(
+            string[] parts,
+            bool gameInProgress,
+            bool combatStarted,
+            Player? activePlayer1,
+            Player? activePlayer2
+        )
+        {
+            // Validate command length (minimum 5, maximum 6 arguments)
+            if (parts.Length < 5 || parts.Length > 6)
+            {
+                CLI.ShowError("Instrução inválida.");
+                return;
+            }
+
+            // A game must be in progress to place ships
+            if (!gameInProgress)
+            {
+                CLI.ShowError("Não existe jogo em curso.");
+                return;
+            }
+
+            string playerName = parts[1];
+            string typeCode = parts[2];
+
+            // Determine the player issuing the command
+            Player? player = (activePlayer1?.Name == playerName) ? activePlayer1 :
+                             (activePlayer2?.Name == playerName) ? activePlayer2 : null;
+
+            if (player == null)
+            {
+                CLI.ShowError("Jogador não participa no jogo em curso.");
+                return;
+            }
+
+            // Cannot place ships after combat has started
+            if (combatStarted)
+            {
+                CLI.ShowError("Combate iniciado.");
+                return;
+            }
+
+            // Try to parse the ship type (e.g., SUBMARINE, DESTROYER)
+            if (!Enum.TryParse<ShipType>(typeCode, out var shipType))
+            {
+                CLI.ShowError("Instrução inválida.");
+                return;
+            }
+
+            // Try to parse the row number
+            if (!int.TryParse(parts[3], out int row))
+            {
+                CLI.ShowError("Linha inválida.");
+                return;
+            }
+
+            // Convert column letter (e.g., 'A') to numeric index (1-10)
+            char colChar = char.ToUpper(parts[4][0]);
+            int col = colChar - 'A' + 1;
+
+            // Determine ship size and required direction
+            int shipSize = ShipTypeData.Sizes[shipType];
+            char direction;
+
+            if (shipSize == 1)
+            {
+                // Small ships may omit direction (default '-')
+                direction = (parts.Length == 6) ? char.ToUpper(parts[5][0]) : '-';
+            }
+            else
+            {
+                // Larger ships must specify direction
+                if (parts.Length != 6)
+                {
+                    CLI.ShowError("Instrução inválida.");
+                    return;
+                }
+                direction = char.ToUpper(parts[5][0]);
+            }
+
+            var newShip = new Ship(shipType, row, col, direction);
+
+            // Check if the position is valid (within grid and not overlapping)
+            if (!player.ShipBoard.CanPlaceShip(newShip))
+            {
+                CLI.ShowError("Posição irregular.");
+                return;
+            }
+
+            // Check if player can place more ships of this type
+            if (!player.CanPlaceMoreOfType(shipType))
+            {
+                CLI.ShowError("Não tem mais navios dessa tipologia disponíveis.");
+                return;
+            }
+
+            // Check if player already reached the total ship limit
+            if (player.ShipsPlaced.Values.Sum() == ShipTypeData.MaxPerPlayer.Values.Sum())
+            {
+                CLI.ShowError("Não é possível colocar navios.");
+                return;
+            }
+
+            // Register the ship on the player's board
+            player.RegisterShip(newShip);
+            CLI.ShowMessage("Navio colocado com sucesso.");
+        }
     }
 }

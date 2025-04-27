@@ -46,6 +46,12 @@ namespace BatalhaNaval.Controllers
 
                     break;
 
+                case "CN":
+
+                    AssistController.PlaceShip(parts, gameInProgress, combatStarted, activePlayer1, activePlayer2);
+
+                    break;
+
                 default:
 
                     CLI.ShowError("Instrução inválida.");
