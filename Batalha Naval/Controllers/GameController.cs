@@ -52,6 +52,12 @@ namespace BatalhaNaval.Controllers
 
                     break;
 
+                case "RN":
+
+                    AssistController.RemoveShip(parts, gameInProgress, combatStarted, activePlayer1, activePlayer2);
+
+                    break;
+
                 default:
 
                     CLI.ShowError("Instrução inválida.");

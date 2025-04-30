@@ -281,5 +281,92 @@ namespace BatalhaNaval.Controllers
             player.RegisterShip(newShip);
             CLI.ShowMessage("Navio colocado com sucesso.");
         }
+
+        /// <summary>
+        /// Handles the "RN" command to remove a ship from the player's board.
+        /// </summary>
+        /// <param name="parts">The command arguments.</param>
+        /// <param name="gameInProgress">Indicates whether a game is currently in progress.</param>
+        /// <param name="combatStarted">Indicates whether combat has started.</param>
+        /// <param name="activePlayer1">Reference to the first active player.</param>
+        /// <param name="activePlayer2">Reference to the second active player.</param>
+        public static void RemoveShip(
+            string[] parts,
+            bool gameInProgress,
+            bool combatStarted,
+            Player? activePlayer1,
+            Player? activePlayer2
+        )
+        {
+            // A game must be in progress to remove ships
+            if (!gameInProgress)
+            {
+                CLI.ShowError("Não existe jogo em curso.");
+                return;
+            }
+
+            // Cannot remove ships after combat has started
+            if (combatStarted)
+            {
+                CLI.ShowError("Combate iniciado.");
+                return;
+            }
+
+            // Validate that we received exactly 4 arguments: RN, player, row, column
+            if (parts.Length != 4)
+            {
+                CLI.ShowError("Instrução inválida.");
+                return;
+            }
+
+            string playerName = parts[1];
+
+            // Try to parse the row number
+            if (!int.TryParse(parts[2], out int row))
+            {
+                CLI.ShowError("Linha inválida.");
+                return;
+            }
+
+            // Convert column letter to index
+            char colChar = char.ToUpper(parts[3][0]);
+            int col = colChar - 'A' + 1;
+
+            // Find the corresponding player
+            Player? player = (activePlayer1?.Name == playerName) ? activePlayer1 :
+                             (activePlayer2?.Name == playerName) ? activePlayer2 : null;
+
+            if (player == null)
+            {
+                CLI.ShowError("Jogador não participa no jogo em curso.");
+                return;
+            }
+
+            // Find the ship occupying the given position
+            var shipToRemove = player.ShipBoard.Ships.FirstOrDefault(s => s.Occupies(row, col));
+
+            if (shipToRemove == null)
+            {
+                CLI.ShowError("Não existe navio na posição.");
+                return;
+            }
+
+            // Remove ship from the board
+            player.ShipBoard.Ships.Remove(shipToRemove);
+
+            // Clear the ship's coordinates from the grid
+            foreach (var (r, c) in shipToRemove.Coordinates)
+            {
+                player.ShipBoard.Grid[r - 1, c - 1] = '.';
+            }
+
+            // Update ship counter
+            if (player.ShipsPlaced.ContainsKey(shipToRemove.Type) && player.ShipsPlaced[shipToRemove.Type] > 0)
+            {
+                player.ShipsPlaced[shipToRemove.Type]--;
+            }
+
+            CLI.ShowMessage("Navio removido com sucesso.");
+        }
     }
 }
