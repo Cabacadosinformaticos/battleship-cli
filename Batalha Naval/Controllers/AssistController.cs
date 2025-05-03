@@ -368,5 +368,60 @@ namespace BatalhaNaval.Controllers
 
             CLI.ShowMessage("Navio removido com sucesso.");
         }
+
+        /// <summary>
+        /// Handles the "IC" command to start the combat phase if both players have placed all ships.
+        /// </summary>
+        /// <param name="parts">Command input parts.</param>
+        /// <param name="gameInProgress">Indicates if a game is in progress.</param>
+        /// <param name="combatStarted">Reference: will be set to true if combat starts.</param>
+        /// <param name="activePlayer1">First active player.</param>
+        /// <param name="activePlayer2">Second active player.</param>
+        public static void StartCombat(
+            string[] parts,
+            bool gameInProgress,
+            ref bool combatStarted,
+            Player? activePlayer1,
+            Player? activePlayer2
+        )
+        {
+            // A game must be in progress to start combat
+            if (!gameInProgress)
+            {
+                CLI.ShowError("Não existe jogo em curso.");
+                return;
+            }
+
+            // Cannot start combat if it already started
+            if (combatStarted)
+            {
+                CLI.ShowError("Combate iniciado.");
+                return;
+            }
+
+            // Validate that there are no extra arguments
+            if (parts.Length != 1)
+            {
+                CLI.ShowError("Instrução inválida.");
+                return;
+            }
+
+            // Check if both players have placed all their ships
+            bool player1Ready = activePlayer1 != null &&
+                activePlayer1.ShipsPlaced.Values.Sum() == ShipTypeData.MaxPerPlayer.Values.Sum();
+
+            bool player2Ready = activePlayer2 != null &&
+                activePlayer2.ShipsPlaced.Values.Sum() == ShipTypeData.MaxPerPlayer.Values.Sum();
+
+            if (!player1Ready || !player2Ready)
+            {
+                CLI.ShowError("Navios não colocados.");
+                return;
+            }
+
+            // All checks passed — start combat
+            combatStarted = true;
+            CLI.ShowMessage("Combate iniciado.");
+        }
     }
 }
