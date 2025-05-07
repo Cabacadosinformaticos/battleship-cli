@@ -423,5 +423,139 @@ namespace BatalhaNaval.Controllers
             combatStarted = true;
             CLI.ShowMessage("Combate iniciado.");
         }
+
+        /// <summary>
+        /// Handles the "T" command to perform a shot in the game.
+        /// </summary>
+        public static void ExecuteShot(
+            string[] parts,
+            bool gameInProgress,
+            bool combatStarted,
+            Player? activePlayer1,
+            Player? activePlayer2,
+            ref Player? currentTurn,
+            ref bool gameOver,
+            ref bool combat,
+            List<Player> players
+        )
+        {
+            // Validate command format (should contain 4 parts: T, player, row, column)
+            if (parts.Length != 4)
+            {
+                CLI.ShowError("Instrução inválida.");
+                return;
+            }
+
+            // Ensure a game is running and combat has started
+            if (!gameInProgress)
+            {
+                CLI.ShowError("Não existe jogo em curso.");
+                return;
+            }
+
+            if (!combatStarted)
+            {
+                CLI.ShowError("Jogo em curso sem combate iniciado.");
+                return;
+            }
+
+            string name = parts[1];
+
+            // Try to parse the row number
+            if (!int.TryParse(parts[2], out int row))
+            {
+                CLI.ShowError("Linha inválida.");
+                return;
+            }
+
+            // Convert column character to numeric index
+            char colChar = char.ToUpper(parts[3][0]);
+            int col = colChar - 'A' + 1;
+
+            // Identify the player taking the shot
+            Player? shooter = (activePlayer1?.Name == name) ? activePlayer1 :
+                              (activePlayer2?.Name == name) ? activePlayer2 : null;
+
+            if (shooter == null)
+            {
+                CLI.ShowError("Jogador não participa no jogo em curso.");
+                return;
+            }
+
+            // Validate if the coordinates are inside the board
+            if (row < 1 || row > 10 || col < 1 || col > 10)
+            {
+                CLI.ShowError("Posição irregular.");
+                return;
+            }
+
+            // Handle the first turn or enforce turn alternation
+            if (currentTurn == null)
+            {
+                currentTurn = shooter; // First move of the match
+            }
+            else if (currentTurn.Name != name)
+            {
+                CLI.ShowError("Instrução inválida.");
+                return;
+            }
+
+            // Identify the opponent
+            Player opponent = (shooter == activePlayer1) ? activePlayer2! : activePlayer1!;
+
+            // Prevent shooting the same position twice
+            if (opponent.ShipBoard.HasShot(row, col))
+            {
+                CLI.ShowError("Posição irregular.");
+                return;
+            }
+
+            // Register the shot on the opponent's board
+            opponent.ShipBoard.RegisterShot(row, col);
+
+            // Check if the shot hit any ship
+            var target = opponent.ShipBoard.Ships.FirstOrDefault(s => s.Occupies(row, col));
+
+            if (target == null)
+            {
+                CLI.ShowMessage("Tiro na água.");
+            }
+            else
+            {
+                target.RegisterHit(row, col);
+
+                if (target.IsSunk)
+                {
+                    // Check if this was the last ship
+                    bool allSunk = opponent.ShipBoard.Ships.All(s => s.IsSunk);
+
+                    if (allSunk)
+                    {
+                        // End the game: update statistics
+                        shooter.Victories++;
+                        shooter.GamesPlayed++;
+                        opponent.GamesPlayed++;
+
+                        CLI.ShowMessage($"Navio {target.Type} afundado. Jogo terminado.");
+
+                        gameOver = false;
+                        combat = false;
+                        currentTurn = null;
+                        return;
+                    }
+                    else
+                    {
+                        CLI.ShowMessage($"Navio {target.Type} afundado.");
+                    }
+                }
+                else
+                {
+                    CLI.ShowMessage($"Tiro em navio {target.Type}.");
+                }
+            }
+
+            // Change turn to opponent
+            currentTurn = opponent;
+        }
     }
 }
