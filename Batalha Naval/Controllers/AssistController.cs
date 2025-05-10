@@ -557,5 +557,55 @@ namespace BatalhaNaval.Controllers
             // Change turn to opponent
             currentTurn = opponent;
         }
+
+        /// <summary>
+        /// Handles the "V" command to show player statistics and opponent boards.
+        /// </summary>
+        /// <param name="gameInProgress">Whether a game is currently running.</param>
+        /// <param name="combatStarted">Whether the combat has already started.</param>
+        /// <param name="activePlayer1">First active player.</param>
+        /// <param name="activePlayer2">Second active player.</param>
+        public static void VisualizeGame(
+            bool gameInProgress,
+            bool combatStarted,
+            Player? activePlayer1,
+            Player? activePlayer2
+        )
+        {
+            // A game must be in progress to visualize stats
+            if (!gameInProgress)
+            {
+                CLI.ShowError("Não existe jogo em curso.");
+                return;
+            }
+        
+            // Combat must have started to see progress
+            if (!combatStarted)
+            {
+                CLI.ShowError("Jogo em curso sem combate iniciado.");
+                return;
+            }
+        
+            // Order players alphabetically by name for consistent display
+            List<Player> gamePlayers = new() { activePlayer1!, activePlayer2! };
+            gamePlayers = gamePlayers.OrderBy(p => p.Name).ToList();
+        
+            foreach (var player in gamePlayers)
+            {
+                // The opponent is the other player in the match
+                Player opponent = (player == activePlayer1) ? activePlayer2! : activePlayer1!;
+        
+                // Gather stats based on opponent's board (what this player has done)
+                int totalShots = opponent.ShipBoard.TotalShots;
+                int hits = opponent.ShipBoard.Hits;
+                int sunk = opponent.ShipBoard.Ships.Count(s => s.IsSunk);
+        
+                // Display summary line
+                CLI.ShowMessage($"{player.Name} {totalShots} {hits} {sunk}");
+        
+                // Show opponent's board (what this player shot)
+                CLI.ShowBoard(opponent.ShipBoard);
+            }
+        }
     }
 }

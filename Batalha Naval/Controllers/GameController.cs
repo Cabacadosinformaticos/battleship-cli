@@ -70,6 +70,12 @@ namespace BatalhaNaval.Controllers
 
                     break;
 
+                case "V":
+
+                    AssistController.VisualizeGame(gameInProgress, combatStarted, activePlayer1, activePlayer2);
+
+                    break;
+
                 default:
 
                     CLI.ShowError("Instrução inválida.");
