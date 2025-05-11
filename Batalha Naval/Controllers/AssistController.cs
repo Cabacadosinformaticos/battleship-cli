@@ -607,5 +607,84 @@ namespace BatalhaNaval.Controllers
                 CLI.ShowBoard(opponent.ShipBoard);
             }
         }
+
+        /// <summary>
+        /// Handles the "D" command to process player(s) forfeiting the game.
+        /// </summary>
+        /// <param name="parts">Command arguments.</param>
+        /// <param name="gameInProgress">Reference to gameInProgress flag to be reset.</param>
+        /// <param name="combatStarted">Reference to combatStarted flag to be reset.</param>
+        /// <param name="activePlayer1">Reference to activePlayer1 to be reset.</param>
+        /// <param name="activePlayer2">Reference to activePlayer2 to be reset.</param>
+        /// <param name="currentTurn">Reference to currentTurn to be reset.</param>
+        /// <param name="players">The global player list.</param>
+        public static void HandleForfeit(
+            string[] parts,
+            ref bool gameInProgress,
+            ref bool combatStarted,
+            ref Player? activePlayer1,
+            ref Player? activePlayer2,
+            ref Player? currentTurn,
+            List<Player> players
+        )
+        {
+            // A game must be in progress to allow forfeiting
+            if (!gameInProgress)
+            {
+                CLI.ShowError("Não existe jogo em curso.");
+                return;
+            }
+        
+            // Must have at least one and at most two players listed in the command
+            if (parts.Length < 2 || parts.Length > 3)
+            {
+                CLI.ShowError("Instrução inválida.");
+                return;
+            }
+        
+            // Extract names of players who are forfeiting
+            List<string> quitters = parts.Skip(1).ToList();
+            List<string> activeNames = new() { activePlayer1!.Name, activePlayer2!.Name };
+        
+            // All players listed must be participating in the current game
+            if (quitters.Any(name => !activeNames.Contains(name)))
+            {
+                CLI.ShowError("Jogador não participa no jogo em curso.");
+                return;
+            }
+        
+            if (quitters.Count == 1)
+            {
+                // One player forfeited → the other wins
+                string loser = quitters[0];
+                string winner = activeNames.First(name => name != loser);
+        
+                Player winnerPlayer = players.First(p => p.Name == winner);
+                Player loserPlayer = players.First(p => p.Name == loser);
+        
+                // Update stats: winner gets victory, both count as having played
+                winnerPlayer.Victories++;
+                winnerPlayer.GamesPlayed++;
+                loserPlayer.GamesPlayed++;
+            }
+            else
+            {
+                // Both players forfeited → both only count the game as played
+                foreach (string name in activeNames)
+                {
+                    var p = players.First(pl => pl.Name == name);
+                    p.GamesPlayed++;
+                }
+            }
+        
+            // Reset game state
+            gameInProgress = false;
+            combatStarted = false;
+            activePlayer1 = null;
+            activePlayer2 = null;
+            currentTurn = null;
+        
+            CLI.ShowMessage("Desistência com sucesso. Jogo terminado.");
+        }
     }
 }
