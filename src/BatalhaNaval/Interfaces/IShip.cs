@@ -13,7 +13,7 @@ namespace BatalhaNaval.Models.Interfaces
         ShipType Type { get; }
 
         /// <summary>
-        /// Gets the current coordinates occupied by the ship.
+        /// Gets all the coordinates occupied by the ship.
         /// </summary>
         List<(int Row, int Col)> Coordinates { get; }
 
@@ -36,5 +36,13 @@ namespace BatalhaNaval.Models.Interfaces
         /// <param name="col">The column to check.</param>
         /// <returns>True if the ship occupies the position, false otherwise.</returns>
         bool Occupies(int row, int col);
+
+        /// <summary>
+        /// Checks whether the ship has already been hit at the specified coordinates.
+        /// </summary>
+        /// <param name="row">The row to check.</param>
+        /// <param name="col">The column to check.</param>
+        /// <returns>True if that part of the ship was hit, false otherwise.</returns>
+        bool IsHitAt(int row, int col);
     }
 }
