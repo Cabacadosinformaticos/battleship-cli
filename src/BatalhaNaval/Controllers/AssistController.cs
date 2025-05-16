@@ -8,6 +8,28 @@ namespace BatalhaNaval.Controllers
     /// </summary>
     public static class AssistController
     {
+        // Size of the square battle grid (rows 1-10, columns A-J)
+        private const int GridSize = 10;
+
+        /// <summary>
+        /// Converts a row number and a column letter (e.g., "10" and "J") into 1-based
+        /// board coordinates.
+        /// </summary>
+        /// <param name="rowText">Row number typed by the user.</param>
+        /// <param name="colText">Column letter typed by the user.</param>
+        /// <param name="row">Output: the row, from 1 to 10.</param>
+        /// <param name="col">Output: the column, from 1 to 10.</param>
+        /// <returns>True if both values describe a cell inside the grid.</returns>
+        private static bool TryParseCoordinates(string rowText, string colText, out int row, out int col)
+        {
+            col = 0;
+            if (!int.TryParse(rowText, out row) || colText.Length != 1)
+                return false;
+
+            col = colText[0] - 'A' + 1;
+            return row >= 1 && row <= GridSize && col >= 1 && col <= GridSize;
+        }
+
         /// <summary>
         /// Handles the "RJ" command to register a new player.
         /// </summary>
@@ -216,23 +238,15 @@ namespace BatalhaNaval.Controllers
                 return;
             }
 
-            // Try to parse the ship type (e.g., SUBMARINE, DESTROYER)
-            if (!Enum.TryParse<ShipType>(typeCode, out var shipType))
+            // Parse the ship type code (L, S, F, C or P). Enum.TryParse alone would also
+            // accept numbers such as "3", so the code must be one known letter.
+            if (typeCode.Length != 1 || !char.IsLetter(typeCode[0]) ||
+                !Enum.TryParse<ShipType>(typeCode, out var shipType) ||
+                !Enum.IsDefined(shipType))
             {
                 CLI.ShowError("Instrução inválida.");
                 return;
             }
-
-            // Try to parse the row number
-            if (!int.TryParse(parts[3], out int row))
-            {
-                CLI.ShowError("Linha inválida.");
-                return;
-            }
-
-            // Convert column letter (e.g., 'A') to numeric index (1-10)
-            char colChar = char.ToUpper(parts[4][0]);
-            int col = colChar - 'A' + 1;
 
             // Determine ship size and required direction
             int shipSize = ShipTypeData.Sizes[shipType];
@@ -240,8 +254,8 @@ namespace BatalhaNaval.Controllers
 
             if (shipSize == 1)
             {
-                // Small ships may omit direction (default '-')
-                direction = (parts.Length == 6) ? char.ToUpper(parts[5][0]) : '-';
+                // A single-cell ship has no orientation, whatever was typed
+                direction = '-';
             }
             else
             {
@@ -252,6 +266,14 @@ namespace BatalhaNaval.Controllers
                     return;
                 }
                 direction = char.ToUpper(parts[5][0]);
+            }
+
+            // The start cell must exist and a multi-cell ship needs a cardinal direction
+            if (!TryParseCoordinates(parts[3], parts[4], out int row, out int col) ||
+                (shipSize > 1 && (parts[5].Length != 1 || !Ship.IsValidDirection(direction))))
+            {
+                CLI.ShowError("Posição irregular.");
+                return;
             }
 
             var newShip = new Ship(shipType, row, col, direction);

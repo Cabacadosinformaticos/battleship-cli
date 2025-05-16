@@ -16,6 +16,13 @@ namespace BatalhaNaval.Models
         // A ship is sunk once every coordinate it occupies has been hit
         public bool IsSunk => hits.Count == Coordinates.Count;
 
+        // Checks whether a letter is one of the four cardinal directions
+        // (N, S, E and O for "Oeste", i.e. West)
+        public static bool IsValidDirection(char direction)
+        {
+            return "NSEO".IndexOf(char.ToUpper(direction)) >= 0;
+        }
+
         // Constructs a ship with a given starting point and direction.
         // Fills in all the coordinates the ship will occupy based on its size.
         public Ship(ShipType type, int startRow, int startCol, char direction)
