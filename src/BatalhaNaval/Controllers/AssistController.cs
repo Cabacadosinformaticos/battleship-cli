@@ -320,6 +320,13 @@ namespace BatalhaNaval.Controllers
             Player? activePlayer2
         )
         {
+            // Validate that we received exactly 4 arguments: RN, player, row, column
+            if (parts.Length != 4)
+            {
+                CLI.ShowError("Instrução inválida.");
+                return;
+            }
+
             // A game must be in progress to remove ships
             if (!gameInProgress)
             {
@@ -334,25 +341,7 @@ namespace BatalhaNaval.Controllers
                 return;
             }
 
-            // Validate that we received exactly 4 arguments: RN, player, row, column
-            if (parts.Length != 4)
-            {
-                CLI.ShowError("Instrução inválida.");
-                return;
-            }
-
             string playerName = parts[1];
-
-            // Try to parse the row number
-            if (!int.TryParse(parts[2], out int row))
-            {
-                CLI.ShowError("Linha inválida.");
-                return;
-            }
-
-            // Convert column letter to index
-            char colChar = char.ToUpper(parts[3][0]);
-            int col = colChar - 'A' + 1;
 
             // Find the corresponding player
             Player? player = (activePlayer1?.Name == playerName) ? activePlayer1 :
@@ -364,8 +353,10 @@ namespace BatalhaNaval.Controllers
                 return;
             }
 
-            // Find the ship occupying the given position
-            var shipToRemove = player.ShipBoard.Ships.FirstOrDefault(s => s.Occupies(row, col));
+            // Find the ship occupying the given position (a cell outside the grid has none)
+            Ship? shipToRemove = null;
+            if (TryParseCoordinates(parts[2], parts[3], out int row, out int col))
+                shipToRemove = player.ShipBoard.Ships.FirstOrDefault(s => s.Occupies(row, col));
 
             if (shipToRemove == null)
             {
@@ -407,6 +398,13 @@ namespace BatalhaNaval.Controllers
             Player? activePlayer2
         )
         {
+            // Validate that there are no extra arguments
+            if (parts.Length != 1)
+            {
+                CLI.ShowError("Instrução inválida.");
+                return;
+            }
+
             // A game must be in progress to start combat
             if (!gameInProgress)
             {
@@ -418,13 +416,6 @@ namespace BatalhaNaval.Controllers
             if (combatStarted)
             {
                 CLI.ShowError("Combate iniciado.");
-                return;
-            }
-
-            // Validate that there are no extra arguments
-            if (parts.Length != 1)
-            {
-                CLI.ShowError("Instrução inválida.");
                 return;
             }
 
@@ -483,17 +474,6 @@ namespace BatalhaNaval.Controllers
 
             string name = parts[1];
 
-            // Try to parse the row number
-            if (!int.TryParse(parts[2], out int row))
-            {
-                CLI.ShowError("Linha inválida.");
-                return;
-            }
-
-            // Convert column character to numeric index
-            char colChar = char.ToUpper(parts[3][0]);
-            int col = colChar - 'A' + 1;
-
             // Identify the player taking the shot
             Player? shooter = (activePlayer1?.Name == name) ? activePlayer1 :
                               (activePlayer2?.Name == name) ? activePlayer2 : null;
@@ -505,7 +485,7 @@ namespace BatalhaNaval.Controllers
             }
 
             // Validate if the coordinates are inside the board
-            if (row < 1 || row > 10 || col < 1 || col > 10)
+            if (!TryParseCoordinates(parts[2], parts[3], out int row, out int col))
             {
                 CLI.ShowError("Posição irregular.");
                 return;
