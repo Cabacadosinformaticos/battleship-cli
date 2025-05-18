@@ -12,8 +12,8 @@ namespace BatalhaNaval.Models
         // Total number of victories by this player
         public int Victories { get; set; }
 
-        // Board where the player's ships are placed
-        public Board ShipBoard { get; }
+        // Board where the player's ships are placed (replaced at the start of every game)
+        public Board ShipBoard { get; private set; }
 
         // Tracks how many ships of each type the player has placed
         public Dictionary<ShipType, int> ShipsPlaced { get; }
@@ -29,6 +29,17 @@ namespace BatalhaNaval.Models
 
             // Set default count of 0 for all ship types
             foreach (var type in Enum.GetValues(typeof(ShipType)).Cast<ShipType>())
+            {
+                ShipsPlaced[type] = 0;
+            }
+        }
+
+        // Clears the fleet and the shots from a previous game so the player can
+        // take part in a new one. Statistics (games and victories) are kept.
+        public void ResetForNewGame()
+        {
+            ShipBoard = new Board();
+            foreach (var type in ShipsPlaced.Keys.ToList())
             {
                 ShipsPlaced[type] = 0;
             }

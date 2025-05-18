@@ -33,6 +33,11 @@ namespace BatalhaNaval.Models.Interfaces
         Dictionary<ShipType, int> ShipsPlaced { get; }
 
         /// <summary>
+        /// Clears the player's board and ship counters before a new game.
+        /// </summary>
+        void ResetForNewGame();
+
+        /// <summary>
         /// Checks whether the player can place more ships of a given type, based on game rules.
         /// </summary>
         /// <param name="type">The type of ship to check.</param>
