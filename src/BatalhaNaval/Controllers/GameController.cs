@@ -42,7 +42,7 @@ namespace BatalhaNaval.Controllers
 
                 case "IJ":
 
-                    AssistController.InitGame(players, parts, out activePlayer1, out activePlayer2, ref gameInProgress);
+                    AssistController.InitGame(players, parts, ref activePlayer1, ref activePlayer2, ref gameInProgress);
 
                     break;
 

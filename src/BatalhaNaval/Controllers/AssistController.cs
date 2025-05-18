@@ -136,21 +136,19 @@ namespace BatalhaNaval.Controllers
         /// </summary>
         /// <param name="players">The list of registered players.</param>
         /// <param name="parts">The command arguments.</param>
-        /// <param name="activePlayer1">Output: the first player in the match.</param>
-        /// <param name="activePlayer2">Output: the second player in the match.</param>
+        /// <param name="activePlayer1">Reference: the first player in the match.</param>
+        /// <param name="activePlayer2">Reference: the second player in the match.</param>
         /// <param name="gameInProgress">Reference: flag indicating if a game is running.</param>
         public static void InitGame(
             List<Player> players,
             string[] parts,
-            out Player? activePlayer1,
-            out Player? activePlayer2,
+            ref Player? activePlayer1,
+            ref Player? activePlayer2,
             ref bool gameInProgress
         )
         {
-            // Reset output values
-            activePlayer1 = null;
-            activePlayer2 = null;
-
+            // The active players are only replaced when the game really starts,
+            // so a rejected IJ does not break the game in progress
             // Validate the command has two player names
             if (parts.Length != 3)
             {
@@ -165,18 +163,22 @@ namespace BatalhaNaval.Controllers
             var player1 = players.FirstOrDefault(p => p.Name == name1);
             var player2 = players.FirstOrDefault(p => p.Name == name2);
 
-            if (player1 == null || player2 == null)
-            {
-                // One or both players not found
-                CLI.ShowError("Jogador não registado.");
-            }
-            else if (gameInProgress)
+            if (gameInProgress)
             {
                 // Cannot start a new game if one is already running
                 CLI.ShowError("Existe um jogo em curso.");
             }
+            else if (player1 == null || player2 == null)
+            {
+                // One or both players not found
+                CLI.ShowError("Jogador não registado.");
+            }
             else
             {
+                // Ships and shots from an earlier game must not carry over
+                player1.ResetForNewGame();
+                player2.ResetForNewGame();
+
                 // Set active players and start the game
                 activePlayer1 = player1;
                 activePlayer2 = player2;
