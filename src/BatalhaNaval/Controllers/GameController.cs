@@ -66,7 +66,7 @@ namespace BatalhaNaval.Controllers
 
                 case "T":
 
-                    AssistController.ExecuteShot(parts, gameInProgress, combatStarted, activePlayer1, activePlayer2, ref currentTurn, ref gameInProgress, ref combatStarted, players);
+                    AssistController.ExecuteShot(parts, ref gameInProgress, ref combatStarted, ref activePlayer1, ref activePlayer2, ref currentTurn);
 
                     break;
 

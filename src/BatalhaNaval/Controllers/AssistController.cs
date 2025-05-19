@@ -441,17 +441,21 @@ namespace BatalhaNaval.Controllers
 
         /// <summary>
         /// Handles the "T" command to perform a shot in the game.
+        /// When the last ship of the opponent sinks, the game ends and all game state is reset.
         /// </summary>
+        /// <param name="parts">The command arguments.</param>
+        /// <param name="gameInProgress">Reference: set to false when the game ends.</param>
+        /// <param name="combatStarted">Reference: set to false when the game ends.</param>
+        /// <param name="activePlayer1">Reference: cleared when the game ends.</param>
+        /// <param name="activePlayer2">Reference: cleared when the game ends.</param>
+        /// <param name="currentTurn">Reference: the player expected to shoot next.</param>
         public static void ExecuteShot(
             string[] parts,
-            bool gameInProgress,
-            bool combatStarted,
-            Player? activePlayer1,
-            Player? activePlayer2,
-            ref Player? currentTurn,
-            ref bool gameOver,
-            ref bool combat,
-            List<Player> players
+            ref bool gameInProgress,
+            ref bool combatStarted,
+            ref Player? activePlayer1,
+            ref Player? activePlayer2,
+            ref Player? currentTurn
         )
         {
             // Validate command format (should contain 4 parts: T, player, row, column)
@@ -542,8 +546,11 @@ namespace BatalhaNaval.Controllers
 
                         CLI.ShowMessage($"Navio {target.Type} afundado. Jogo terminado.");
 
-                        gameOver = false;
-                        combat = false;
+                        // The game is over: nobody is playing any more
+                        gameInProgress = false;
+                        combatStarted = false;
+                        activePlayer1 = null;
+                        activePlayer2 = null;
                         currentTurn = null;
                         return;
                     }
