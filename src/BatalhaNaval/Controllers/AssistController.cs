@@ -639,22 +639,23 @@ namespace BatalhaNaval.Controllers
             List<Player> players
         )
         {
-            // A game must be in progress to allow forfeiting
-            if (!gameInProgress)
-            {
-                CLI.ShowError("Não existe jogo em curso.");
-                return;
-            }
-        
             // Must have at least one and at most two players listed in the command
             if (parts.Length < 2 || parts.Length > 3)
             {
                 CLI.ShowError("Instrução inválida.");
                 return;
             }
-        
-            // Extract names of players who are forfeiting
-            List<string> quitters = parts.Skip(1).ToList();
+
+            // A game must be in progress to allow forfeiting
+            if (!gameInProgress)
+            {
+                CLI.ShowError("Não existe jogo em curso.");
+                return;
+            }
+
+            // Extract names of players who are forfeiting. "D Ana Ana" is the same as
+            // "D Ana", so repeated names are counted once.
+            List<string> quitters = parts.Skip(1).Distinct().ToList();
             List<string> activeNames = new() { activePlayer1!.Name, activePlayer2!.Name };
         
             // All players listed must be participating in the current game
