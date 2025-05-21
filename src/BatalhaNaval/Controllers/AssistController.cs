@@ -121,7 +121,7 @@ namespace BatalhaNaval.Controllers
             else
             {
                 // Sort players alphabetically by name
-                var sortedPlayers = players.OrderBy(p => p.Name);
+                var sortedPlayers = players.OrderBy(p => p.Name, StringComparer.InvariantCulture);
 
                 // Display each player's name, games played, and victories
                 foreach (var player in sortedPlayers)
@@ -185,7 +185,7 @@ namespace BatalhaNaval.Controllers
                 gameInProgress = true;
 
                 // Display a confirmation message in alphabetical order
-                var namesOrdered = new[] { name1, name2 }.OrderBy(n => n).ToArray();
+                var namesOrdered = new[] { name1, name2 }.OrderBy(n => n, StringComparer.InvariantCulture).ToArray();
                 CLI.ShowMessage($"Jogo iniciado entre {namesOrdered[0]} e {namesOrdered[1]}.");
             }
         }
@@ -599,7 +599,7 @@ namespace BatalhaNaval.Controllers
         
             // Order players alphabetically by name for consistent display
             List<Player> gamePlayers = new() { activePlayer1!, activePlayer2! };
-            gamePlayers = gamePlayers.OrderBy(p => p.Name).ToList();
+            gamePlayers = gamePlayers.OrderBy(p => p.Name, StringComparer.InvariantCulture).ToList();
         
             foreach (var player in gamePlayers)
             {
