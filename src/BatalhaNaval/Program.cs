@@ -1,4 +1,5 @@
-﻿using BatalhaNaval.Controllers;
+﻿using System.Text;
+using BatalhaNaval.Controllers;
 
 namespace BatalhaNaval
 {
@@ -7,6 +8,11 @@ namespace BatalhaNaval
         // Entry point of the application
         static void Main(string[] args)
         {
+            // Messages contain Portuguese characters (ã, ç, ...), so input and output
+            // use UTF-8 without a byte order mark, whatever the console default is
+            Console.InputEncoding = new UTF8Encoding(false);
+            Console.OutputEncoding = new UTF8Encoding(false);
+
             // Creates an instance of the game controller that will process commands
             var controller = new GameController();
 
