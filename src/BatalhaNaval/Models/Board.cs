@@ -90,28 +90,27 @@ namespace BatalhaNaval.Models
             return ShotsFired.Contains((row, col));
         }
 
-        // Console visual representation of the board:
-        // X = hit, * = miss, empty = not yet targeted
-        public void ShowFormattedGrid()
+        // Text representation of the shots received by this board, one string per line:
+        // X = hit, * = miss, blank = not yet targeted.
+        // Row numbers are right-aligned so that row 10 lines up with the others,
+        // and trailing spaces are removed from every line.
+        // The board only builds the text; printing it is the job of the view.
+        public List<string> RenderShots()
         {
-            Console.WriteLine("  A B C D E F G H I J");
+            var lines = new List<string> { "   A B C D E F G H I J" };
             for (int r = 1; r <= Rows; r++)
             {
-                Console.Write(r + " ");
+                var cells = new char[Columns];
                 for (int c = 1; c <= Columns; c++)
                 {
                     if (ShotsFired.Contains((r, c)))
-                    {
-                        var symbol = Ships.Any(s => s.Occupies(r, c)) ? 'X' : '*';
-                        Console.Write(symbol + " ");
-                    }
+                        cells[c - 1] = Ships.Any(s => s.Occupies(r, c)) ? 'X' : '*';
                     else
-                    {
-                        Console.Write("  ");
-                    }
+                        cells[c - 1] = ' ';
                 }
-                Console.WriteLine();
+                lines.Add($"{r,2} {string.Join(' ', cells)}".TrimEnd());
             }
+            return lines;
         }
     }
 }

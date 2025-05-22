@@ -56,8 +56,10 @@ namespace BatalhaNaval.Models.Interfaces
         bool HasShot(int row, int col);
 
         /// <summary>
-        /// Displays the current formatted board grid in the console, showing previous shots.
+        /// Builds the text of the board grid with the shots received so far
+        /// (X for a hit, * for a miss), one string per line.
         /// </summary>
-        void ShowFormattedGrid();
+        /// <returns>The header line followed by one line per row.</returns>
+        List<string> RenderShots();
     }
 }
