@@ -1,197 +1,146 @@
-RJ Alice
 Jogador registado com sucesso.
-RJ Bob
 Jogador registado com sucesso.
-RJ Charlie
 Jogador registado com sucesso.
-RJ Alice
 Jogador existente.
-LJ
 Alice 0 0
 Bob 0 0
 Charlie 0 0
-EJ Charlie
 Jogador removido com sucesso.
-IJ Alice Bob
 Jogo iniciado entre Alice e Bob.
-EJ Alice
 Jogador participa no jogo em curso.
-CN Alice P 1 A E
 Navio colocado com sucesso.
-CN Alice C 3 G E
 Navio colocado com sucesso.
-CN Alice F 5 C E
 Navio colocado com sucesso.
-CN Alice L 1 J -
 Navio colocado com sucesso.
-RN Alice 1 J
 Navio removido com sucesso.
-CN Alice F 6 I S
 Navio colocado com sucesso.
-CN Alice S 1 G E
 Navio colocado com sucesso.
-CN Alice S 3 A E
 Navio colocado com sucesso.
-CN Alice S 3 D E
 Navio colocado com sucesso.
-CN Alice L 1 J -
 Navio colocado com sucesso.
-CN Alice L 5 A 
 Navio colocado com sucesso.
-CN Alice L 5 G -
 Navio colocado com sucesso.
-CN Alice L 7 A
 Navio colocado com sucesso.
-CN Alice L 9 C -
 Não tem mais navios dessa tipologia disponíveis.
-CN Bob P 1 J O
 Navio colocado com sucesso.
-CN Bob C 3 D O
 Navio colocado com sucesso.
-CN Bob F 5 H O
 Navio colocado com sucesso.
-CN Bob F 6 B S
 Navio colocado com sucesso.
-CN Bob S 1 D O
 Navio colocado com sucesso.
-CN Bob S 3 J O
 Navio colocado com sucesso.
-CN Bob S 3 G O
 Navio colocado com sucesso.
-CN Bob L 1 A -
 Navio colocado com sucesso.
-CN Bob L 5 J -
 Navio colocado com sucesso.
-CN Bob L 5 D -
 Navio colocado com sucesso.
-CN Bob L 7 J -
 Navio colocado com sucesso.
-IC
 Combate iniciado.
-CN Alice L 10 E -
 Combate iniciado.
-T Alice 1 J
 Tiro em navio P.
-V
 Alice 1 1 0
-  A B C D E F G H I J
-1                   *
-2
-3
-4
-5
-6
-7
-8
-9
+   A B C D E F G H I J
+ 1                   X
+ 2
+ 3
+ 4
+ 5
+ 6
+ 7
+ 8
+ 9
 10
 Bob 0 0 0
-  A B C D E F G H I J
-1
-2
-3
-4
-5
-6
-7
-8
-9
+   A B C D E F G H I J
+ 1
+ 2
+ 3
+ 4
+ 5
+ 6
+ 7
+ 8
+ 9
 10
-T Bob 1 A
 Tiro em navio P.
-T Alice 1 I
 Tiro em navio P.
-T Bob 1 B
 Tiro em navio P.
-V
 Alice 2 2 0
-  A B C D E F G H I J
-1                 * *
-2
-3
-4
-5
-6
-7
-8
-9
+   A B C D E F G H I J
+ 1                 X X
+ 2
+ 3
+ 4
+ 5
+ 6
+ 7
+ 8
+ 9
 10
 Bob 2 2 0
-  A B C D E F G H I J
-1 * *
-2
-3
-4
-5
-6
-7
-8
-9
+   A B C D E F G H I J
+ 1 X X
+ 2
+ 3
+ 4
+ 5
+ 6
+ 7
+ 8
+ 9
 10
-T Alice 1 I
 Posição irregular.
-V
 Alice 2 2 0
-  A B C D E F G H I J
-1                 * *
-2
-3
-4
-5
-6
-7
-8
-9
+   A B C D E F G H I J
+ 1                 X X
+ 2
+ 3
+ 4
+ 5
+ 6
+ 7
+ 8
+ 9
 10
 Bob 2 2 0
-  A B C D E F G H I J
-1 * *
-2
-3
-4
-5
-6
-7
-8
-9
+   A B C D E F G H I J
+ 1 X X
+ 2
+ 3
+ 4
+ 5
+ 6
+ 7
+ 8
+ 9
 10
-T Alice 1 H
 Tiro em navio P.
-T Alice 2 H
 Instrução inválida.
-V
 Alice 3 3 0
-  A B C D E F G H I J
-1               * * *
-2
-3
-4
-5
-6
-7
-8
-9
+   A B C D E F G H I J
+ 1               X X X
+ 2
+ 3
+ 4
+ 5
+ 6
+ 7
+ 8
+ 9
 10
 Bob 2 2 0
-  A B C D E F G H I J
-1 * *
-2
-3
-4
-5
-6
-7
-8
-9
+   A B C D E F G H I J
+ 1 X X
+ 2
+ 3
+ 4
+ 5
+ 6
+ 7
+ 8
+ 9
 10
-T Bob 1 C
 Tiro em navio P.
-T Alice 1 G
 Tiro em navio P.
-D Bob
 Desistência com sucesso. Jogo terminado.
-V
 Não existe jogo em curso.
-LJ
 Alice 1 1
 Bob 1 0
