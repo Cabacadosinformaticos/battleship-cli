@@ -1,0 +1,8 @@
+* text=auto
+
+# The tests compare outputs byte by byte and bash needs LF scripts,
+# so these files keep LF endings on every system
+*.sh text eol=lf
+tests/*.in text eol=lf
+tests/*.out text eol=lf
+*.pdf binary
