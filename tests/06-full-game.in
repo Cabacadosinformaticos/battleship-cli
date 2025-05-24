@@ -1,0 +1,79 @@
+RJ Afonso
+RJ Beatriz
+IJ Afonso Beatriz
+CN Afonso P 1 A E
+CN Afonso C 2 I S
+CN Afonso F 3 B S
+CN Afonso F 10 H E
+CN Afonso S 3 F S
+CN Afonso S 8 F S
+CN Afonso S 10 C O
+CN Afonso L 8 B -
+CN Afonso L 6 E -
+CN Afonso L 6 G -
+CN Afonso L 7 I -
+CN Beatriz P 1 A E
+CN Beatriz C 2 I S
+CN Beatriz F 3 B S
+CN Beatriz F 10 H E
+CN Beatriz S 3 F S
+CN Beatriz S 8 F S
+CN Beatriz S 10 C O
+CN Beatriz L 8 B -
+CN Beatriz L 6 E -
+CN Beatriz L 6 G -
+CN Beatriz L 7 I -
+IC
+T Afonso 1 A
+T Beatriz 1 F
+T Afonso 1 B
+T Beatriz 1 G
+T Afonso 1 C
+T Beatriz 1 H
+T Afonso 1 D
+T Beatriz 1 I
+T Afonso 1 E
+T Beatriz 1 J
+T Afonso 2 I
+T Beatriz 2 A
+T Afonso 3 I
+T Beatriz 2 B
+T Afonso 4 I
+T Beatriz 2 C
+T Afonso 5 I
+T Beatriz 2 D
+T Afonso 3 B
+T Beatriz 2 E
+T Afonso 4 B
+T Beatriz 2 F
+T Afonso 5 B
+T Beatriz 2 G
+T Afonso 10 H
+T Beatriz 2 H
+T Afonso 10 I
+T Beatriz 2 J
+T Afonso 10 J
+T Beatriz 3 A
+T Afonso 3 F
+T Beatriz 3 C
+T Afonso 4 F
+T Beatriz 3 D
+T Afonso 8 F
+T Beatriz 3 E
+T Afonso 9 F
+T Beatriz 3 G
+T Afonso 10 C
+T Beatriz 3 H
+T Afonso 10 B
+T Beatriz 3 J
+T Afonso 8 B
+T Beatriz 4 A
+T Afonso 6 E
+T Beatriz 4 C
+T Afonso 6 G
+T Beatriz 4 D
+T Afonso 7 I
+V
+LJ
+IJ Beatriz Afonso
+RN Afonso 1 A
