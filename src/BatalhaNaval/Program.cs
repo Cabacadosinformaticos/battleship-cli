@@ -19,8 +19,8 @@ namespace BatalhaNaval
             string? line;
 
             // Continuously reads user input from the console
-            // until an empty line or EOF is encountered
-            while (!string.IsNullOrEmpty(line = Console.ReadLine()))
+            // until a blank line (empty or only spaces) or EOF is encountered
+            while (!string.IsNullOrWhiteSpace(line = Console.ReadLine()))
             {
                 // Processes each command entered by the user
                 controller.ProcessCommand(line);
