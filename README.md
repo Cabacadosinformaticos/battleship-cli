@@ -195,4 +195,4 @@ The assignment leaves a few situations open. These are the choices made:
 ## Documents
 
 - [Assignment briefing](docs/briefing.pdf) (Portuguese): rules, instructions and evaluation.
-- [Project report](docs/REPORT.pt.md) (Portuguese): team, architecture, data structures and algorithms.
+- [Project report](docs/REPORT.md): team, architecture, data structures, algorithms and the decisions on open points.
