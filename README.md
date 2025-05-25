@@ -3,7 +3,7 @@
 A two-player **Battleship** game played through text commands in the terminal, written in
 C# (.NET 8) with the standard library only.
 
-It was the group project of the **Programação e Algoritmos** (Programming and Algorithms)
+This is our group project for the **Programação e Algoritmos** (Programming and Algorithms)
 course, 2nd semester of the 1st year of the Computer Engineering degree at
 [IADE](https://www.iade.europeia.pt/), 2024/2025.
 
@@ -155,7 +155,7 @@ battleship-cli
 │   ├── Interfaces              IBoard, IPlayer and IShip
 │   └── Views/CLI.cs            the only class that writes to the console
 ├── tests                       input/output test pairs
-├── docs                        assignment and original report
+├── docs                        assignment and project report
 └── run-tests.sh / run-tests.ps1
 ```
 
@@ -195,4 +195,4 @@ The assignment leaves a few situations open. These are the choices made:
 ## Documents
 
 - [Assignment briefing](docs/briefing.pdf) (Portuguese): rules, instructions and evaluation.
-- [Original project report](docs/REPORT.pt.md) (Portuguese), as delivered with the project.
+- [Project report](docs/REPORT.pt.md) (Portuguese): team, architecture, data structures and algorithms.
